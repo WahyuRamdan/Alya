@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Untitled</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'assets/css/gradient-navbar-styles.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/gradient-navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/Navbar-Right-Links-Dark-icons.css' %}">
+</head>
+
+<body>
+    <nav class="navbar navbar-light navbar-expand-md py-3">
+        <div class="container"><a class="navbar-brand d-flex align-items-center" href="#"><span>Mixue</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-4"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse flex-grow-0 order-md-first" id="navcol-4">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
+                    {% if request.user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link" href="/maps">Maps Mixue</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/table">Table Mixue</a></li>
+                    {% endif %}
+                </ul>
+                <div class="d-md-none my-2">
+                    {% if request.user.is_authenticated %}
+                        <a class="btn btn-primary ms-md-2" role="button" href="/logout">Logout</a>
+                    {% else %}
+                        <a class="btn btn-primary ms-md-2" role="button" href="/login">Login</a>
+                    {% endif %}
+
+                </div>
+            </div>
+            <div class="d-none d-md-block">
+                {% if request.user.is_authenticated %}
+                    <a class="btn btn-primary ms-md-2" role="button" href="/logout">Logout</a>
+                {% else %}
+                    <a class="btn btn-primary ms-md-2" role="button" href="/login">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Pemilik</th>
+                        <th>Keterangan</th>
+                        <th>Alamat</th>
+                        <th>Button</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    
+                    {% for field in crud %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{field.nama}}</td>
+                            <td>{{field.keterangan}}</td>
+                            <td>{{field.lokasi}}</td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a class="btn btn-primary" href="/table/{{field.id}}">Edit</a>
+                                    <a class="btn btn-primary" href="/table/hapus/{{field.id}}" style="background: #f31616;">Hapus</a></div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+        <form method="POST" class="d-grid justify-content-center mt-4">
+            {% csrf_token %}
+            
+            {% if update_crud %}
+                <input type="text" class="form-control" style="width: 300px;" name="nama" value="{{update_crud.nama}}">
+                <input type="text" class="form-control" style="width: 300px;" name="keterangan" value="{{update_crud.keterangan}}" >
+                <input type="text" class="form-control" style="width: 300px;" name="lokasi" value="{{update_crud.lokasi}}">
+
+            {% else %}
+                <input type="text" class="form-control" style="width: 300px;" name="nama" placeholder="Nama...">
+                <input type="text" class="form-control" style="width: 300px;" name="keterangan" placeholder="Keterangan...">
+                <input type="text" class="form-control" style="width: 300px;" name="lokasi" placeholder="Lokasi...">
+            {% endif %}
+            <button class="btn btn-primary mt-4 mb-4" style="width: 300px;" type="submit">Tambah Data</button>
+        </form>
+    </div>
+    <footer class="text-center bg-dark">
+        <div class="container text-white py-4 py-lg-5">
+            <p class="text-muted mb-0">Copyright © 2023&nbsp;Alya Syaima Nafisah</p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
