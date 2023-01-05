@@ -1,1 +1,1 @@
-web: gunicorn chaniago.wsgi --log-file -
+web: gunicorn alya.wsgi --log-file -
